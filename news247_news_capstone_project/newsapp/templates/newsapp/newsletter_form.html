@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-xl-8">
+    <div class="section-card">
+      <span class="eyebrow">Curate newsletter</span>
+      <h1 class="display-6 fw-bold mb-3">{{ page_title }}</h1>
+      <form method="post" novalidate>
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div class="mb-3">
+          <label class="form-label">Title</label>
+          {{ form.title }}
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Description</label>
+          {{ form.description }}
+        </div>
+        <div class="mb-4">
+          <label class="form-label">Articles</label>
+          {{ form.articles }}
+        </div>
+        <button class="btn btn-primary rounded-pill px-4">Save newsletter</button>
+        <a href="{% url 'newsletter_list' %}" class="btn btn-outline-secondary rounded-pill px-4 ms-2">Cancel</a>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center align-items-center min-vh-75">
+  <div class="col-lg-10">
+    <div class="row g-4 align-items-stretch">
+      <div class="col-lg-6">
+        <div class="hero-panel h-100">
+          <span class="eyebrow">Capstone-ready newsroom</span>
+          <h1 class="display-5 fw-bold mb-3">Modern news workflow with clean role-based access.</h1>
+          <p class="lead text-secondary">News 24/7 ships with articles, newsletters, editor approvals, JWT endpoints, email notifications, and internal approval logging.</p>
+          <div class="d-flex flex-wrap gap-2 mt-4">
+            <span class="feature-chip">Reader subscriptions</span>
+            <span class="feature-chip">Editor approval queue</span>
+            <span class="feature-chip">Journalist publishing</span>
+            <span class="feature-chip">REST API + JWT</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-5 offset-lg-1">
+        <div class="auth-card card border-0 shadow-lg">
+          <div class="card-body p-4 p-lg-5">
+            <h2 class="h3 fw-bold mb-1">Sign in</h2>
+            <p class="text-secondary mb-4">Access your newsroom workspace.</p>
+            <form method="post" novalidate>
+              {% csrf_token %}
+              {{ form.non_field_errors }}
+              <div class="mb-3">
+                <label class="form-label">Username</label>
+                {{ form.username }}
+              </div>
+              <div class="mb-4">
+                <label class="form-label">Password</label>
+                {{ form.password }}
+              </div>
+              <button class="btn btn-primary w-100 rounded-pill py-2">Login</button>
+            </form>
+            <p class="text-secondary small mt-4 mb-0">New here? <a href="{% url 'register' %}" class="fw-semibold">Create an account</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

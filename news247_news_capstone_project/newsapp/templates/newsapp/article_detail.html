@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+<article class="article-shell">
+  <div class="mb-4">
+    <span class="eyebrow">{% if article.approved %}Published{% else %}Draft{% endif %}</span>
+    <h1 class="display-5 fw-bold mb-3">{{ article.title }}</h1>
+    <div class="meta-row">
+      <span>{{ article.author.username }}</span>
+      <span>{{ article.created_at|date:'d M Y H:i' }}</span>
+      {% if article.publisher %}<span>{{ article.publisher.name }}</span>{% endif %}
+      {% if article.approved_by %}<span>Approved by {{ article.approved_by.username }}</span>{% endif %}
+    </div>
+  </div>
+  <div class="row g-4">
+    <div class="col-lg-8">
+      <div class="section-card article-body">
+        {% if article.summary %}<p class="lead text-secondary">{{ article.summary }}</p>{% endif %}
+        <p>{{ article.content|linebreaks }}</p>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="section-card sticky-card">
+        <h2 class="h5 mb-3">Actions</h2>
+        <div class="d-grid gap-2">
+          {% if request.user.role == 'journalist' and request.user == article.author or request.user.role == 'editor' %}
+            <a href="{% url 'article_update' article.pk %}" class="btn btn-outline-dark rounded-pill">Edit article</a>
+            <a href="{% url 'article_delete' article.pk %}" class="btn btn-outline-danger rounded-pill">Delete article</a>
+          {% endif %}
+          {% if request.user.role == 'editor' and not article.approved %}
+            <a href="{% url 'approve_article' article.pk %}" class="btn btn-primary rounded-pill">Approve now</a>
+          {% endif %}
+          <a href="{% url 'article_list' %}" class="btn btn-light rounded-pill">Back to articles</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+{% endblock %}

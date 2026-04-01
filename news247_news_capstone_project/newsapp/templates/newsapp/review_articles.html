@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <span class="eyebrow">Editor queue</span>
+    <h1 class="display-6 fw-bold mb-1">Pending article approvals</h1>
+    <p class="text-secondary mb-0">Approve stories and trigger email + internal API logging automatically.</p>
+  </div>
+</div>
+<div class="row g-4">
+  {% for article in pending_articles %}
+    <div class="col-lg-6">
+      <div class="section-card h-100">
+        <div class="small text-secondary mb-2">{{ article.author.username }} {% if article.publisher %}· {{ article.publisher.name }}{% endif %}</div>
+        <h2 class="h4">{{ article.title }}</h2>
+        <p class="text-secondary">{{ article.summary|default:article.content|truncatewords:25 }}</p>
+        <div class="d-flex gap-2 mt-4">
+          <a href="{% url 'article_detail' article.pk %}" class="btn btn-outline-dark rounded-pill px-3">Preview</a>
+          <a href="{% url 'approve_article' article.pk %}" class="btn btn-primary rounded-pill px-3">Approve</a>
+        </div>
+      </div>
+    </div>
+  {% empty %}
+    <div class="col-12"><div class="section-card"><p class="text-secondary mb-0">There are no pending articles right now.</p></div></div>
+  {% endfor %}
+</div>
+{% endblock %}

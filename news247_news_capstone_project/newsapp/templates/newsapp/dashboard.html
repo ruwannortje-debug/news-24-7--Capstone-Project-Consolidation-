@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="hero-shell mb-5">
+  <div class="row g-4 align-items-center">
+    <div class="col-lg-7">
+      <span class="eyebrow">Welcome back</span>
+      <h1 class="display-5 fw-bold mb-3">{{ request.user.get_role_display }} control center</h1>
+      <p class="lead text-secondary mb-4">Track approvals, browse published stories, and keep newsletters polished from one clean workspace.</p>
+      <div class="d-flex flex-wrap gap-3">
+        <a href="{% url 'article_list' %}" class="btn btn-primary btn-lg rounded-pill px-4">Browse articles</a>
+        <a href="{% url 'newsletter_list' %}" class="btn btn-outline-dark btn-lg rounded-pill px-4">Browse newsletters</a>
+      </div>
+    </div>
+    <div class="col-lg-5">
+      <div class="stats-grid">
+        <div class="stat-card"><span>Published</span><strong>{{ featured_articles|length }}</strong></div>
+        <div class="stat-card"><span>Newsletters</span><strong>{{ newsletters|length }}</strong></div>
+        <div class="stat-card"><span>Your role</span><strong>{{ request.user.get_role_display }}</strong></div>
+        <div class="stat-card"><span>Pending</span><strong>{% if request.user.role == 'editor' %}{{ pending_articles|length }}{% else %}-{% endif %}</strong></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="row g-4">
+  <div class="col-lg-8">
+    <div class="section-card">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="h4 mb-0">Featured stories</h2>
+        <a href="{% url 'article_list' %}" class="link-primary fw-semibold text-decoration-none">View all</a>
+      </div>
+      <div class="row g-3">
+        {% for article in featured_articles %}
+          <div class="col-md-6">
+            <a href="{% url 'article_detail' article.pk %}" class="article-card text-decoration-none h-100 d-block">
+              <div class="small text-secondary mb-2">{{ article.author.username }} {% if article.publisher %}· {{ article.publisher.name }}{% endif %}</div>
+              <h3 class="h5 text-dark">{{ article.title }}</h3>
+              <p class="text-secondary mb-0">{{ article.summary|default:article.content|truncatewords:22 }}</p>
+            </a>
+          </div>
+        {% empty %}
+          <p class="text-secondary mb-0">No approved articles yet.</p>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="section-card mb-4">
+      <h2 class="h5 mb-3">Latest newsletters</h2>
+      {% for newsletter in newsletters %}
+        <div class="compact-item">
+          <strong>{{ newsletter.title }}</strong>
+          <span>{{ newsletter.articles.count }} article{{ newsletter.articles.count|pluralize }}</span>
+        </div>
+      {% empty %}
+        <p class="text-secondary mb-0">No newsletters yet.</p>
+      {% endfor %}
+    </div>
+    {% if request.user.role == 'editor' %}
+      <div class="section-card">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h2 class="h5 mb-0">Review queue</h2>
+          <a href="{% url 'review_articles' %}" class="link-primary text-decoration-none fw-semibold">Open</a>
+        </div>
+        {% for article in pending_articles %}
+          <div class="compact-item">
+            <strong>{{ article.title }}</strong>
+            <span>{{ article.author.username }}</span>
+          </div>
+        {% empty %}
+          <p class="text-secondary mb-0">Nothing waiting for approval.</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

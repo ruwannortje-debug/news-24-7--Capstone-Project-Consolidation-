@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-6">
+    <div class="section-card text-center">
+      <span class="eyebrow">Confirm action</span>
+      <h1 class="h2 fw-bold mb-3">Delete "{{ article.title }}"?</h1>
+      <p class="text-secondary">This action cannot be undone.</p>
+      <form method="post">
+        {% csrf_token %}
+        <button class="btn btn-danger rounded-pill px-4">Delete article</button>
+        <a href="{% url 'article_detail' article.pk %}" class="btn btn-outline-secondary rounded-pill px-4 ms-2">Cancel</a>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

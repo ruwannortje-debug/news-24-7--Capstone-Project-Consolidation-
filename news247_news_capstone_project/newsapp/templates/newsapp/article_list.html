@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 mb-4">
+  <div>
+    <span class="eyebrow">Published archive</span>
+    <h1 class="display-6 fw-bold mb-1">Approved articles</h1>
+    <p class="text-secondary mb-0">A clean, reader-friendly view of every approved story in the system.</p>
+  </div>
+  {% if request.user.role == 'journalist' %}
+    <a href="{% url 'article_create' %}" class="btn btn-primary rounded-pill px-4">Create article</a>
+  {% endif %}
+</div>
+<div class="row g-4">
+  {% for article in articles %}
+    <div class="col-lg-4 col-md-6">
+      <div class="section-card h-100">
+        <div class="small text-secondary mb-2">{{ article.created_at|date:'d M Y' }} {% if article.publisher %}· {{ article.publisher.name }}{% endif %}</div>
+        <h2 class="h4">{{ article.title }}</h2>
+        <p class="text-secondary">{{ article.summary|default:article.content|truncatewords:28 }}</p>
+        <div class="d-flex justify-content-between align-items-center mt-4">
+          <span class="fw-semibold">{{ article.author.username }}</span>
+          <a href="{% url 'article_detail' article.pk %}" class="btn btn-outline-dark btn-sm rounded-pill px-3">Read more</a>
+        </div>
+      </div>
+    </div>
+  {% empty %}
+    <div class="col-12"><div class="section-card"><p class="text-secondary mb-0">No approved articles have been published yet.</p></div></div>
+  {% endfor %}
+</div>
+{% endblock %}

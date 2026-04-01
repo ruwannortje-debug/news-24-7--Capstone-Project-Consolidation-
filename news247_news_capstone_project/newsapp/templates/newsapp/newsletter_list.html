@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 mb-4">
+  <div>
+    <span class="eyebrow">Curated reading</span>
+    <h1 class="display-6 fw-bold mb-1">Newsletters</h1>
+    <p class="text-secondary mb-0">Collections of approved stories prepared by the newsroom.</p>
+  </div>
+  {% if request.user.role == 'journalist' or request.user.role == 'editor' %}
+    <a href="{% url 'newsletter_create' %}" class="btn btn-primary rounded-pill px-4">Create newsletter</a>
+  {% endif %}
+</div>
+<div class="row g-4">
+  {% for newsletter in newsletters %}
+    <div class="col-lg-6">
+      <div class="section-card h-100">
+        <div class="small text-secondary mb-2">{{ newsletter.author.username }} · {{ newsletter.created_at|date:'d M Y' }}</div>
+        <h2 class="h4">{{ newsletter.title }}</h2>
+        <p class="text-secondary">{{ newsletter.description }}</p>
+        <div class="mt-4">
+          <div class="small text-uppercase text-secondary fw-semibold mb-2">Included articles</div>
+          <div class="d-flex flex-wrap gap-2">
+            {% for article in newsletter.articles.all %}
+              <span class="feature-chip">{{ article.title }}</span>
+            {% empty %}
+              <span class="text-secondary">No articles selected yet.</span>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  {% empty %}
+    <div class="col-12"><div class="section-card"><p class="text-secondary mb-0">No newsletters created yet.</p></div></div>
+  {% endfor %}
+</div>
+{% endblock %}
