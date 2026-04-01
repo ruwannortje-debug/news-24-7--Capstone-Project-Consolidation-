@@ -1,6 +1,6 @@
 # News 24/7 Capstone Project
 
-This repository contains the **News 24/7** Django capstone project from the previous course level.
+This repository contains the News 24/7 Django capstone project from the previous course level.
 
 ## Project structure
 
@@ -134,9 +134,9 @@ python manage.py test
 
 The application supports these roles:
 
-- **Reader**: can view approved content
-- **Journalist**: can create and manage their own articles
-- **Editor**: can review and approve pending articles
+- **Reader**: can view approved content.
+- **Journalist**: can create and manage their own articles.
+- **Editor**: can review and approve pending articles.
 
 ## Main features
 
