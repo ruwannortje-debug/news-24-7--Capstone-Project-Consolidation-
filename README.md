@@ -30,22 +30,22 @@ News 24/7 is a Django-based news platform that supports multiple user roles and 
 
 ### Key Features
 
-- Custom user model with role-based access
-- Roles: Reader, Journalist, and Editor
-- Article lifecycle: create, edit, review, approve, and publish
-- Newsletter management
-- JWT authentication for API security
-- Email notifications for approved articles
-- SQLite (default) and MariaDB support
-- Docker support
+- Custom user model with role-based access  
+- Roles: Reader, Journalist, and Editor  
+- Article lifecycle: create, edit, review, approve, and publish  
+- Newsletter management  
+- JWT authentication for API security  
+- Email notifications for approved articles  
+- SQLite (default) and MariaDB support  
+- Docker support  
 
 ---
 
 ## Prerequisites
 
-- Python 3.12+
-- pip
-- Git
+- Python 3.12+  
+- pip  
+- Git  
 
 ---
 
@@ -106,16 +106,20 @@ http://127.0.0.1:8000/
 All API endpoints require authentication using a JWT access token unless stated otherwise.
 
 ### Authentication
-- POST /api/token/
+- POST /api/token/  
+- POST /api/token/refresh/  
 
 ### Articles
-- GET /api/articles/
-- POST /api/articles/
-- GET /api/articles/<id>/
-- PUT /api/articles/<id>/
-- DELETE /api/articles/<id>/
+- GET /api/articles/  
+- POST /api/articles/  
+- GET /api/articles/<id>/  
+- PUT /api/articles/<id>/  
+- DELETE /api/articles/<id>/  
+- POST /api/articles/<id>/approve/  
 
-### Example request
+---
+
+## Example Request
 
 ```json
 {
@@ -125,23 +129,20 @@ All API endpoints require authentication using a JWT access token unless stated 
 }
 ```
 
-### Example curl
+---
+
+## Example curl
 
 ```bash
-curl -X GET http://127.0.0.1:8000/api/articles/
-```
-
-Authentication header:
-
-```text
-Authorization: Bearer <access_token>
+curl -X GET http://127.0.0.1:8000/api/articles/ \
+-H "Authorization: Bearer <access_token>"
 ```
 
 ---
 
 ## Sphinx Documentation
 
-The project includes Sphinx-generated documentation in the top-level docs folder.
+The project includes Sphinx-generated documentation in the top-level `docs` folder.
 
 To rebuild the documentation:
 
@@ -157,3 +158,13 @@ docs/build/html/index.html
 ```
 
 Open this file in your browser to view the documentation.
+
+---
+
+## Repository Link
+
+The repository link is stored in:
+
+```text
+capstone.txt
+```
