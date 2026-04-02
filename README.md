@@ -95,11 +95,15 @@ python manage.py runserver
 
 Open in browser:
 
+```text
 http://127.0.0.1:8000/
+```
 
 ---
 
 ## API Endpoints
+
+All API endpoints require authentication using a JWT access token unless stated otherwise.
 
 ### Authentication
 - POST /api/token/
@@ -127,6 +131,12 @@ http://127.0.0.1:8000/
 curl -X GET http://127.0.0.1:8000/api/articles/
 ```
 
+Authentication header:
+
+```text
+Authorization: Bearer <access_token>
+```
+
 ---
 
 ## Sphinx Documentation
@@ -142,8 +152,8 @@ cd docs
 
 The generated HTML entry point is:
 
+```text
 docs/build/html/index.html
+```
 
 Open this file in your browser to view the documentation.
-
----
