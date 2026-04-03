@@ -1,3 +1,5 @@
+"""Views for the News 24/7 web interface and REST API."""
+
 from __future__ import annotations
 
 from django.contrib import messages
@@ -22,12 +24,14 @@ User = get_user_model()
 
 
 class HomeView(LoginView):
+    """Render the login page and redirect authenticated users to the dashboard."""
     template_name = "newsapp/login.html"
     authentication_form = LoginForm
     redirect_authenticated_user = True
 
 
 class AppLogoutView(LogoutView):
+    """Support logout requests from both GET links and POST forms."""
     next_page = reverse_lazy("login")
     http_method_names = ["get", "post", "options", "head"]
 
@@ -53,6 +57,7 @@ def register_view(request: HttpRequest) -> HttpResponse:
 
 @login_required
 def dashboard_view(request: HttpRequest) -> HttpResponse:
+    """Display featured articles, newsletters, and editor review items."""
     featured_articles = Article.objects.filter(approved=True)[:6]
     pending_articles = Article.objects.filter(approved=False)[:5] if is_effective_editor(request.user) else []
     newsletters = Newsletter.objects.all()[:4]
@@ -69,12 +74,14 @@ def dashboard_view(request: HttpRequest) -> HttpResponse:
 
 @login_required
 def article_list_view(request: HttpRequest) -> HttpResponse:
+    """Show the list of approved articles available to signed-in users."""
     articles = Article.objects.filter(approved=True)
     return render(request, "newsapp/article_list.html", {"articles": articles})
 
 
 @login_required
 def article_detail_view(request: HttpRequest, pk: int) -> HttpResponse:
+    """Display a single article when the current user is allowed to view it."""
     article = get_object_or_404(Article, pk=pk)
     if not article.approved and not (is_effective_editor(request.user) or is_effective_journalist(request.user)):
         raise Http404("Article not found.")
@@ -83,6 +90,7 @@ def article_detail_view(request: HttpRequest, pk: int) -> HttpResponse:
 
 @login_required
 def article_create_view(request: HttpRequest) -> HttpResponse:
+    """Create a new article from the web interface."""
     if not is_effective_journalist(request.user):
         messages.error(request, "Only journalists can create articles.")
         return redirect("dashboard")
@@ -102,6 +110,7 @@ def article_create_view(request: HttpRequest) -> HttpResponse:
 
 @login_required
 def article_update_view(request: HttpRequest, pk: int) -> HttpResponse:
+    """Edit an existing article while enforcing role-based restrictions."""
     article = get_object_or_404(Article, pk=pk)
     if not (is_effective_editor(request.user) or is_effective_journalist(request.user)):
         messages.error(request, "You do not have permission to edit articles.")
@@ -130,6 +139,7 @@ def article_update_view(request: HttpRequest, pk: int) -> HttpResponse:
 
 @login_required
 def article_delete_view(request: HttpRequest, pk: int) -> HttpResponse:
+    """Delete an article when the current user has permission."""
     article = get_object_or_404(Article, pk=pk)
     if not (is_effective_editor(request.user) or is_effective_journalist(request.user)):
         messages.error(request, "You do not have permission to delete articles.")
@@ -146,6 +156,7 @@ def article_delete_view(request: HttpRequest, pk: int) -> HttpResponse:
 
 @login_required
 def review_articles_view(request: HttpRequest) -> HttpResponse:
+    """List pending articles for editors to review."""
     if not is_effective_editor(request.user):
         messages.error(request, "Only editors can review pending articles.")
         return redirect("dashboard")
@@ -155,6 +166,7 @@ def review_articles_view(request: HttpRequest) -> HttpResponse:
 
 @login_required
 def approve_article_view(request: HttpRequest, pk: int) -> HttpResponse:
+    """Approve a pending article from the web interface."""
     if not is_effective_editor(request.user):
         messages.error(request, "Only editors can approve articles.")
         return redirect("dashboard")
@@ -169,12 +181,14 @@ def approve_article_view(request: HttpRequest, pk: int) -> HttpResponse:
 
 @login_required
 def newsletter_list_view(request: HttpRequest) -> HttpResponse:
+    """Show all newsletters with their linked articles and authors."""
     newsletters = Newsletter.objects.prefetch_related("articles", "author").all()
     return render(request, "newsapp/newsletter_list.html", {"newsletters": newsletters})
 
 
 @login_required
 def newsletter_create_view(request: HttpRequest) -> HttpResponse:
+    """Create a newsletter from selected articles."""
     if not (is_effective_editor(request.user) or is_effective_journalist(request.user)):
         messages.error(request, "Only editors and journalists can create newsletters.")
         return redirect("dashboard")
@@ -193,25 +207,31 @@ def newsletter_create_view(request: HttpRequest) -> HttpResponse:
 
 
 class ArticleListCreateAPIView(generics.ListCreateAPIView):
+    """List approved articles or create a new article via the API."""
     serializer_class = ArticleSerializer
 
     def get_queryset(self):
+        """Return approved articles with related author and publisher data preloaded."""
         return Article.objects.filter(approved=True).select_related("author", "publisher")
 
     def get_permissions(self):
+        """Allow authenticated reads and restrict article creation to journalists."""
         if self.request.method == "POST":
             return [permissions.IsAuthenticated(), IsJournalist()]
         return [permissions.IsAuthenticated()]
 
     def perform_create(self, serializer):
+        """Create a new article and attach the currently authenticated author."""
         serializer.save(author=self.request.user)
 
 
 class SubscribedArticleListAPIView(generics.ListAPIView):
+    """Return approved articles from subscribed publishers and journalists."""
     serializer_class = ArticleSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
+        """Build a queryset limited to approved articles from the user's subscriptions."""
         user = self.request.user
         return (
             Article.objects.filter(approved=True)
@@ -225,17 +245,20 @@ class SubscribedArticleListAPIView(generics.ListAPIView):
 
 
 class ArticleRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    """Retrieve, update, or delete a single article through the API."""
     serializer_class = ArticleSerializer
     queryset = Article.objects.select_related("author", "publisher")
     permission_classes = [permissions.IsAuthenticated]
 
     def get_object(self):
+        """Return the selected article only when the current user may view it."""
         article = super().get_object()
         if not article.approved and not (is_effective_editor(self.request.user) or is_effective_journalist(self.request.user)):
             raise Http404
         return article
 
     def update(self, request, *args, **kwargs):
+        """Update an article while preserving the journalist re-approval workflow."""
         article = self.get_object()
         if not (is_effective_editor(request.user) or is_effective_journalist(request.user)):
             return Response({"detail": "You do not have permission to update articles."}, status=status.HTTP_403_FORBIDDEN)
@@ -252,6 +275,7 @@ class ArticleRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView)
         return response
 
     def destroy(self, request, *args, **kwargs):
+        """Delete an article when the current user is authorised to remove it."""
         article = self.get_object()
         if not (is_effective_editor(request.user) or is_effective_journalist(request.user)):
             return Response({"detail": "You do not have permission to delete articles."}, status=status.HTTP_403_FORBIDDEN)
@@ -261,9 +285,11 @@ class ArticleRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView)
 
 
 class ApproveArticleAPIView(APIView):
+    """Approve an article through a dedicated API endpoint."""
     permission_classes = [permissions.IsAuthenticated, IsEditor]
 
     def post(self, request, pk: int, *args, **kwargs):
+        """Mark the selected article as approved and return the updated payload."""
         article = get_object_or_404(Article, pk=pk)
         article.approved = True
         article.approved_by = request.user
@@ -273,17 +299,20 @@ class ApproveArticleAPIView(APIView):
 
 
 class NewsletterListAPIView(generics.ListAPIView):
+    """List newsletters that can be accessed by authenticated users."""
     queryset = Newsletter.objects.prefetch_related("articles").all()
     serializer_class = NewsletterSerializer
     permission_classes = [permissions.IsAuthenticated]
 
 
 class ApprovedArticleLogCreateAPIView(generics.CreateAPIView):
+    """Create or update approved article log entries for downstream integrations."""
     queryset = ApprovedArticleLog.objects.all()
     serializer_class = ApprovedArticleLogSerializer
     permission_classes = [permissions.AllowAny]
 
     def create(self, request, *args, **kwargs):
+        """Create a log entry or update the existing one for the same article."""
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         approved_log, _ = ApprovedArticleLog.objects.update_or_create(

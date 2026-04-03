@@ -1,3 +1,5 @@
+"""URL routes for the News 24/7 web pages and API endpoints."""
+
 from django.urls import path
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 

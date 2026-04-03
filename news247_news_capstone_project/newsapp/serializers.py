@@ -1,21 +1,29 @@
+"""Serializers for the News 24/7 REST API."""
+
 from rest_framework import serializers
 
 from .models import ApprovedArticleLog, Article, CustomUser, Newsletter, Publisher
 
 
 class UserSerializer(serializers.ModelSerializer):
+    """Represent a user in API responses."""
+
     class Meta:
         model = CustomUser
         fields = ["id", "username", "email", "role"]
 
 
 class PublisherSerializer(serializers.ModelSerializer):
+    """Represent a publisher in API responses."""
+
     class Meta:
         model = Publisher
         fields = ["id", "name", "slug", "description"]
 
 
 class ArticleSerializer(serializers.ModelSerializer):
+    """Validate and serialize article data for list, detail, and create views."""
+
     author = UserSerializer(read_only=True)
     publisher = PublisherSerializer(read_only=True)
     publisher_id = serializers.PrimaryKeyRelatedField(
@@ -45,6 +53,8 @@ class ArticleSerializer(serializers.ModelSerializer):
 
 
 class NewsletterSerializer(serializers.ModelSerializer):
+    """Serialize newsletter records and their linked articles."""
+
     author = UserSerializer(read_only=True)
     articles = ArticleSerializer(many=True, read_only=True)
     article_ids = serializers.PrimaryKeyRelatedField(
@@ -61,6 +71,8 @@ class NewsletterSerializer(serializers.ModelSerializer):
 
 
 class ApprovedArticleLogSerializer(serializers.ModelSerializer):
+    """Serialize the internal approved-article log records."""
+
     class Meta:
         model = ApprovedArticleLog
         fields = ["id", "article", "title", "author_username", "publisher_name", "approved_at"]

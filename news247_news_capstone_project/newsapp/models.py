@@ -1,3 +1,9 @@
+"""Database models for the News 24/7 application.
+
+This module defines the custom user model, publisher records, articles,
+newsletters, and the approval log used by the API workflow.
+"""
+
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
@@ -32,6 +38,7 @@ class CustomUser(AbstractUser):
     )
 
     def clean(self) -> None:
+        """Validate that only reader accounts can keep publisher and journalist subscriptions."""
         super().clean()
         if self.pk and self.role != self.ROLE_READER and (
             self.subscribed_publishers.exists() or self.subscribed_journalists.exists()
@@ -57,14 +64,17 @@ class CustomUser(AbstractUser):
 
     @property
     def is_reader(self) -> bool:
+        """Return True when the user is assigned to the reader role."""
         return self.role == self.ROLE_READER
 
     @property
     def is_editor(self) -> bool:
+        """Return True when the user is assigned to the editor role."""
         return self.role == self.ROLE_EDITOR
 
     @property
     def is_journalist(self) -> bool:
+        """Return True when the user is assigned to the journalist role."""
         return self.role == self.ROLE_JOURNALIST
 
 
@@ -92,6 +102,7 @@ class Publisher(models.Model):
         ordering = ["name"]
 
     def __str__(self) -> str:
+        """Return the display name used for publisher labels and admin listings."""
         return self.name
 
 
@@ -135,6 +146,7 @@ class Article(models.Model):
         ]
 
     def clean(self) -> None:
+        """Validate that each article is authored by a user with the journalist role."""
         super().clean()
         if self.author_id is None:
             return
@@ -149,6 +161,7 @@ class Article(models.Model):
         self.save()
 
     def __str__(self) -> str:
+        """Return the human-readable article title."""
         return self.title
 
 
@@ -171,6 +184,7 @@ class Newsletter(models.Model):
         ordering = ["-created_at"]
 
     def __str__(self) -> str:
+        """Return the newsletter title for templates and admin screens."""
         return self.title
 
 
@@ -187,6 +201,7 @@ class ApprovedArticleLog(models.Model):
         ordering = ["-approved_at"]
 
     def __str__(self) -> str:
+        """Return a readable label for the approval log entry."""
         return f"Approved article log: {self.title}"
 
 

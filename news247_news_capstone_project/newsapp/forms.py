@@ -1,3 +1,5 @@
+"""Form classes used by the News 24/7 web interface."""
+
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 
@@ -5,11 +7,15 @@ from .models import Article, CustomUser, Newsletter
 
 
 class LoginForm(AuthenticationForm):
+    """Authenticate a user from the login page."""
+
     username = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control", "placeholder": "Username"}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={"class": "form-control", "placeholder": "Password"}))
 
 
 class RegisterForm(UserCreationForm):
+    """Register a new user with an email address and role selection."""
+
     email = forms.EmailField(required=True, widget=forms.EmailInput(attrs={"class": "form-control"}))
     role = forms.ChoiceField(choices=CustomUser.ROLE_CHOICES, widget=forms.Select(attrs={"class": "form-select"}))
 
@@ -18,6 +24,7 @@ class RegisterForm(UserCreationForm):
         fields = ("username", "email", "role")
 
     def __init__(self, *args, **kwargs):
+        """Apply Bootstrap classes to the default user creation fields."""
         super().__init__(*args, **kwargs)
         self.fields["username"].widget.attrs.update({"class": "form-control"})
         self.fields["password1"].widget.attrs.update({"class": "form-control"})
@@ -25,6 +32,8 @@ class RegisterForm(UserCreationForm):
 
 
 class ArticleForm(forms.ModelForm):
+    """Create or edit a news article from the web interface."""
+
     class Meta:
         model = Article
         fields = ["title", "summary", "content", "publisher"]
@@ -37,6 +46,8 @@ class ArticleForm(forms.ModelForm):
 
 
 class NewsletterForm(forms.ModelForm):
+    """Create or edit a newsletter and attach selected articles."""
+
     class Meta:
         model = Newsletter
         fields = ["title", "description", "articles"]
