@@ -8,3 +8,4 @@ News 24/7 Documentation
    overview
    setup
    api
+   code_docs
