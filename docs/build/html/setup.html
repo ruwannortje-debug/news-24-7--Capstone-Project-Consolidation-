@@ -14,7 +14,7 @@
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="API Documentation" href="api.html" />
+    <link rel="next" title="API Guide" href="api.html" />
     <link rel="prev" title="Project Overview" href="overview.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -35,15 +35,29 @@
             
   <section id="setup-guide">
 <h1>Setup Guide<a class="headerlink" href="#setup-guide" title="Link to this heading">¶</a></h1>
-<section id="steps">
-<h2>Steps<a class="headerlink" href="#steps" title="Link to this heading">¶</a></h2>
-<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">-m</span> <span class="n">venv</span> <span class="n">venv</span>
+<p>The project should be run from the <code class="docutils literal notranslate"><span class="pre">news247_news_capstone_project</span></code> folder.
+The commands below follow the same Sphinx workflow described in the supplied
+HyperionDev documentation PDF.</p>
+<section id="run-the-application">
+<h2>Run the application<a class="headerlink" href="#run-the-application" title="Link to this heading">¶</a></h2>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">cd </span><span class="n">news247_news_capstone_project</span>
+<span class="n">python</span> <span class="n">-m</span> <span class="n">venv</span> <span class="n">venv</span>
 <span class="n">venv</span><span class="p">\</span><span class="n">Scripts</span><span class="p">\</span><span class="n">activate</span>
-<span class="n">pip</span> <span class="n">install</span> <span class="n">-r</span> <span class="p">..\</span><span class="n">news247_news_capstone_project</span><span class="p">\</span><span class="n">requirements</span><span class="p">.</span><span class="n">txt</span>
-<span class="n">python</span> <span class="p">..\</span><span class="n">news247_news_capstone_project</span><span class="p">\</span><span class="n">manage</span><span class="p">.</span><span class="n">py</span> <span class="n">migrate</span>
-<span class="n">python</span> <span class="p">..\</span><span class="n">news247_news_capstone_project</span><span class="p">\</span><span class="n">manage</span><span class="p">.</span><span class="n">py</span> <span class="n">runserver</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="n">-r</span> <span class="n">requirements</span><span class="p">.</span><span class="n">txt</span>
+<span class="n">python</span> <span class="n">manage</span><span class="p">.</span><span class="n">py</span> <span class="n">migrate</span>
+<span class="n">python</span> <span class="n">manage</span><span class="p">.</span><span class="n">py</span> <span class="n">runserver</span>
 </pre></div>
 </div>
+</section>
+<section id="build-the-documentation">
+<h2>Build the documentation<a class="headerlink" href="#build-the-documentation" title="Link to this heading">¶</a></h2>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">cd </span><span class="p">..\</span><span class="n">docs</span>
+<span class="p">.\</span><span class="n">make</span><span class="p">.</span><span class="n">bat</span> <span class="n">clean</span>
+<span class="p">.\</span><span class="n">make</span><span class="p">.</span><span class="n">bat</span> <span class="n">html</span>
+</pre></div>
+</div>
+<p>Open <code class="docutils literal notranslate"><span class="pre">docs\build\html\index.html</span></code> in a browser to view the generated
+project documentation.</p>
 </section>
 </section>
 
@@ -77,10 +91,12 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Project Overview</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Setup Guide</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#steps">Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#run-the-application">Run the application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#build-the-documentation">Build the documentation</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="code_docs.html">Code Documentation</a></li>
 </ul>
 
 <div class="relations">
@@ -88,7 +104,7 @@
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
       <li>Previous: <a href="overview.html" title="previous chapter">Project Overview</a></li>
-      <li>Next: <a href="api.html" title="next chapter">API Documentation</a></li>
+      <li>Next: <a href="api.html" title="next chapter">API Guide</a></li>
   </ul></li>
 </ul>
 </div>

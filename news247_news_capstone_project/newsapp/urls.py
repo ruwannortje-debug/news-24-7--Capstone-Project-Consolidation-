@@ -5,8 +5,8 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from .views import (
     AppLogoutView,
-    ApproveArticleAPIView,
     ApprovedArticleLogCreateAPIView,
+    ApproveArticleAPIView,
     ArticleListCreateAPIView,
     ArticleRetrieveUpdateDestroyAPIView,
     HomeView,
