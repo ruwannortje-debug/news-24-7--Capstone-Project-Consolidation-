@@ -1,7 +1,9 @@
 ## News 24/7 Capstone Project
 
 This project is a Django-based news platform built as part of the Capstone Project. It demonstrates:
+
 Documentation was generated using Sphinx autodoc for the Django project modules.
+
 
 -   Django development
 -   REST API integration
