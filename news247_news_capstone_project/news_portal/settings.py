@@ -1,3 +1,11 @@
+"""Django settings for the News 24/7 capstone project.
+
+The project supports SQLite for local development and an optional MariaDB
+configuration through environment variables. JWT authentication is enabled for
+API endpoints, while static files, email, and role-based permissions are kept
+simple for student-friendly local setup.
+"""
+
 from pathlib import Path
 import os
 

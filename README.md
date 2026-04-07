@@ -1,170 +1,127 @@
-# News 24/7 Capstone Project
+## News 24/7 Capstone Project
 
-This repository contains the News 24/7 Django Capstone Project.
+This project is a Django-based news platform built as part of the Capstone Project. It demonstrates:
 
----
+-   Django development
+-   REST API integration
+-   Sphinx documentation
+-   Docker containerisation
+-   Git version control workflow
 
-## Project Structure
+------------------------------------------------------------------------
 
-```
-news-24-7-capstone/
-├── README.md
-├── capstone.txt
-├── docs/
-└── news247_news_capstone_project/
-    ├── .env.example
-    ├── Dockerfile
-    ├── manage.py
-    ├── news_portal/
-    ├── newsapp/
-    ├── requirements.txt
-    ├── static/
-    └── templates/
-```
+## Features
 
----
+-   User roles (Reader, Journalist, Editor)
+-   Article creation and approval workflow
+-   REST API endpoints
+-   JWT Authentication
+-   Sphinx-generated documentation
+-   Docker support
 
-## Project Overview
+------------------------------------------------------------------------
 
-News 24/7 is a Django-based news platform that supports multiple user roles and provides both a web interface and REST API.
+## Setup (Virtual Environment)
 
-### Key Features
+### 1. Clone the repository
 
-- Custom user model with role-based access  
-- Roles: Reader, Journalist, and Editor  
-- Article lifecycle: create, edit, review, approve, and publish  
-- Newsletter management  
-- JWT authentication for API security  
-- Email notifications for approved articles  
-- SQLite (default) and MariaDB support  
-- Docker support  
+    git clone <your-repo-link>
+    cd news-24-7-capstone
 
----
+### 2. Create virtual environment
 
-## Prerequisites
+    python -m venv venv
 
-- Python 3.12+  
-- pip  
-- Git  
+### 3. Activate environment (Windows)
 
----
+    venv\Scripts\activate
 
-## Local Setup
+### 4. Install dependencies
 
-Navigate to the project folder:
+    pip install -r requirements.txt
 
-```powershell
-cd news247_news_capstone_project
-```
+### 5. Run migrations
 
-Create a virtual environment:
+    python manage.py migrate
 
-```powershell
-python -m venv venv
-```
+### 6. Run server
 
-Activate the environment (Windows):
+    python manage.py runserver
 
-```powershell
-venv\Scripts\activate
-```
+------------------------------------------------------------------------
 
-Install dependencies:
+## Run with Docker
 
-```powershell
-pip install -r requirements.txt
-```
+### Build image
 
----
+    docker build -t news247 .
 
-## Database Setup
+### Run container
 
-```powershell
-python manage.py makemigrations
-python manage.py migrate
-python manage.py createsuperuser
-```
+    docker run -p 8000:8000 news247
 
----
-
-## Run the Application
-
-```powershell
-python manage.py runserver
-```
-
-Open in browser:
-
-```text
-http://127.0.0.1:8000/
-```
-
----
-
-## API Endpoints
-
-All API endpoints require authentication using a JWT access token unless stated otherwise.
-
-### Authentication
-- POST /api/token/  
-- POST /api/token/refresh/  
-
-### Articles
-- GET /api/articles/  
-- POST /api/articles/  
-- GET /api/articles/<id>/  
-- PUT /api/articles/<id>/  
-- DELETE /api/articles/<id>/  
-- POST /api/articles/<id>/approve/  
-
----
-
-## Example Request
-
-```json
-{
-  "title": "Example Article",
-  "content": "Article content",
-  "summary": "Short summary"
-}
-```
-
----
-
-## Example curl
-
-```bash
-curl -X GET http://127.0.0.1:8000/api/articles/ \
--H "Authorization: Bearer <access_token>"
-```
-
----
+------------------------------------------------------------------------
 
 ## Sphinx Documentation
 
-The project includes Sphinx-generated documentation in the top-level `docs` folder.
+### Location of generated docs
 
-To rebuild the documentation:
+    docs/build/html/index.html
 
-```powershell
-cd docs
-.\make.bat html
-```
+### To rebuild documentation
 
-The generated HTML entry point is:
+    cd docs
+    .\make.bat clean
+    .\make.bat html
 
-```text
-docs/build/html/index.html
-```
+Then open:
 
-Open this file in your browser to view the documentation.
+    docs/build/html/index.html
 
----
+------------------------------------------------------------------------
+
+## Project Structure
+
+    news-24-7-capstone/
+    │
+    ├── news_portal/
+    ├── newsapp/
+    ├── docs/
+    ├── Dockerfile
+    ├── requirements.txt
+    ├── README.md
+    └── capstone.txt
+
+------------------------------------------------------------------------
+
+## Environment Variables
+
+Create a `.env` file:
+
+    SECRET_KEY=your_secret_key
+    DEBUG=True
+    ALLOWED_HOSTS=127.0.0.1,localhost
+
+------------------------------------------------------------------------
+
+## Notes
+
+-   Do NOT commit secrets to GitHub
+-   Documentation is generated using Sphinx and autodoc
+-   Docker setup allows easy deployment on other machines
+
+------------------------------------------------------------------------
 
 ## Repository Link
 
-The repository link is stored in:
+See `capstone.txt` for the GitHub repository link.
 
-```text
-capstone.txt
-```
+------------------------------------------------------------------------
+
+## Submission Checklist
+
+-   ✔ requirements.txt included\
+-   ✔ Dockerfile working\
+-   ✔ Sphinx docs generated\
+-   ✔ README with full instructions\
+-   ✔ capstone.txt included

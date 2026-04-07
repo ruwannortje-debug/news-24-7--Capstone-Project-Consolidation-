@@ -6,7 +6,13 @@ newsapp.apps module
 
 .. automodule:: newsapp.apps
    :members:
-   :undoc-members:
+   :show-inheritance:
+
+newsapp.admin module
+--------------------
+
+.. automodule:: newsapp.admin
+   :members:
    :show-inheritance:
 
 newsapp.forms module
@@ -14,7 +20,6 @@ newsapp.forms module
 
 .. automodule:: newsapp.forms
    :members:
-   :undoc-members:
    :show-inheritance:
 
 newsapp.models module
@@ -22,16 +27,14 @@ newsapp.models module
 
 .. automodule:: newsapp.models
    :members:
-   :undoc-members:
    :show-inheritance:
-   :exclude-members: reader_publishers, reader_journalists, independent_articles, independent_newsletters
+   :exclude-members: reader_publishers, reader_journalists, independent_articles, independent_newsletters, objects
 
 newsapp.permissions module
 --------------------------
 
 .. automodule:: newsapp.permissions
    :members:
-   :undoc-members:
    :show-inheritance:
 
 newsapp.serializers module
@@ -39,7 +42,20 @@ newsapp.serializers module
 
 .. automodule:: newsapp.serializers
    :members:
-   :undoc-members:
+   :show-inheritance:
+
+newsapp.signals module
+----------------------
+
+.. automodule:: newsapp.signals
+   :members:
+   :show-inheritance:
+
+newsapp.urls module
+-------------------
+
+.. automodule:: newsapp.urls
+   :members:
    :show-inheritance:
 
 newsapp.views module
@@ -47,5 +63,4 @@ newsapp.views module
 
 .. automodule:: newsapp.views
    :members:
-   :undoc-members:
    :show-inheritance:

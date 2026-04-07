@@ -1,6 +1,11 @@
-from __future__ import annotations
+"""Signal handlers and startup helpers for the News 24/7 application.
 
-from typing import Iterable
+This module keeps Django groups in sync with application roles, assigns
+permissions after migrations, emails subscribers when an article is approved,
+and posts approved-article events to the internal API log endpoint.
+"""
+
+from __future__ import annotations
 
 import requests
 from django.apps import apps
@@ -13,10 +18,9 @@ from django.core.mail import send_mail
 from django.db.models.signals import post_migrate, post_save
 from django.dispatch import receiver
 
-from .models import ApprovedArticleLog, Article, Newsletter, Publisher
+from .models import ApprovedArticleLog, Article, Newsletter
 
 User = get_user_model()
-
 
 ROLE_TO_GROUP = {
     "reader": "Reader",
@@ -26,6 +30,12 @@ ROLE_TO_GROUP = {
 
 
 def _set_group_permissions() -> None:
+    """Create and assign the expected model permissions to each role group.
+
+    The capstone brief requires a role-based workflow. This helper ensures the
+    Reader, Editor, and Journalist groups exist and that each group receives the
+    correct model permissions after migrations have completed.
+    """
     article_ct = ContentType.objects.get_for_model(Article)
     newsletter_ct = ContentType.objects.get_for_model(Newsletter)
     perms = {
@@ -71,6 +81,7 @@ def _set_group_permissions() -> None:
 
 @receiver(post_migrate)
 def create_groups_and_permissions(sender, **kwargs) -> None:
+    """Create groups and refresh role permissions after migrations complete."""
     app_config = apps.get_app_config("newsapp")
     create_permissions(app_config, verbosity=0)
     _set_group_permissions()
@@ -78,6 +89,13 @@ def create_groups_and_permissions(sender, **kwargs) -> None:
 
 @receiver(post_save, sender=User)
 def assign_group_by_role(sender, instance, created, **kwargs) -> None:
+    """Keep the user's Django group aligned with the selected application role.
+
+    :param sender: The user model class that fired the signal.
+    :param instance: The saved user instance.
+    :param created: Indicates whether the user was created in this save call.
+    :return: None
+    """
     group_name = ROLE_TO_GROUP.get(instance.role)
     if not group_name:
         return
@@ -88,8 +106,13 @@ def assign_group_by_role(sender, instance, created, **kwargs) -> None:
         instance.groups.add(group)
 
 
-
 def _get_approval_recipients(article: Article) -> list[str]:
+    """Collect subscriber email addresses for an approved article.
+
+    :param article: The article that has been approved.
+    :return: A sorted list of unique recipient email addresses.
+    :rtype: list[str]
+    """
     recipients: set[str] = set()
     journalist_subscribers = User.objects.filter(
         role=User.ROLE_READER,
@@ -108,6 +131,13 @@ def _get_approval_recipients(article: Article) -> list[str]:
 
 @receiver(post_save, sender=Article)
 def notify_on_article_approval(sender, instance: Article, created: bool, **kwargs) -> None:
+    """Send notifications and create an internal log when an article is approved.
+
+    :param sender: The model class that fired the signal.
+    :param instance: The saved article instance.
+    :param created: Indicates whether the article was newly created.
+    :return: None
+    """
     if not instance.approved or instance.approval_notified:
         return
 

@@ -35,14 +35,19 @@
             
   <section id="project-overview">
 <h1>Project Overview<a class="headerlink" href="#project-overview" title="Link to this heading">¶</a></h1>
-<p>News 24/7 is a Django-based news platform.</p>
-<section id="features">
-<h2>Features<a class="headerlink" href="#features" title="Link to this heading">¶</a></h2>
+<p>News 24/7 is a Django-based news platform built for a role-based editorial
+workflow. Readers can browse approved content and subscribe to publishers or
+journalists, journalists can write articles and newsletters, and editors can
+review and approve content before distribution.</p>
+<section id="main-features">
+<h2>Main features<a class="headerlink" href="#main-features" title="Link to this heading">¶</a></h2>
 <ul class="simple">
-<li><p>User authentication (JWT)</p></li>
-<li><p>Role-based access (Reader, Journalist, Editor)</p></li>
-<li><p>Article creation and approval</p></li>
-<li><p>REST API</p></li>
+<li><p>Custom user model with reader, editor, and journalist roles.</p></li>
+<li><p>Article drafting, editing, approval, and publication workflow.</p></li>
+<li><p>Newsletter creation with article selection.</p></li>
+<li><p>JWT-protected REST API for article and newsletter endpoints.</p></li>
+<li><p>Email notifications and approved-article logging via signal handlers.</p></li>
+<li><p>Sphinx documentation generated from project docstrings.</p></li>
 </ul>
 </section>
 </section>
@@ -76,11 +81,12 @@
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Project Overview</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#features">Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#main-features">Main features</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="setup.html">Setup Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="code_docs.html">Code Documentation</a></li>
 </ul>
 
 <div class="relations">
