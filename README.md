@@ -28,8 +28,8 @@ Documentation was generated using Sphinx autodoc for the Django project modules.
 
 ### 1. Clone the repository
 
-    git clone <your-repo-link>
-    cd news-24-7-capstone
+    git clone https://github.com/ruwannortje-debug/news-24-7--Capstone-Project-Consolidation-.git
+    cd news-24-7--Capstone-Project-Consolidation-
 
 ### 2. Create virtual environment
 
