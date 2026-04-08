@@ -1,125 +1,145 @@
 # News 24/7 Capstone Project
 
-News 24/7 is a Django-based news platform built for the capstone.
-It demonstrates Django development, role-based access control, REST API usage,
+News 24/7 is a Django-based news platform built for the capstone
+project.\
+It demonstrates Django development, role-based access control, REST API
+usage,\
 Sphinx documentation, Docker containerisation, and Git workflow.
+
+------------------------------------------------------------------------
 
 ## Features
 
-- Role-based access for Readers, Journalists, and Editors
-- Article drafting, editing, and approval workflow
-- Newsletter support
-- JWT authentication for API access
-- Sphinx documentation generated from project docstrings
-- Docker support for local containerised runs
+-   Role-based access for Readers, Journalists, and Editors
+-   Article drafting, editing, and approval workflow
+-   Newsletter support
+-   JWT authentication for API access
+-   Sphinx documentation generated from project docstrings
+-   Docker support for local containerised runs
 
-## Repository layout
+------------------------------------------------------------------------
 
-```text
-news-24-7--Capstone-Project-Consolidation-/
-├── README.md
-├── capstone.txt
-├── docs/                              # Sphinx project + generated HTML docs
-└── news247_news_capstone_project/     # Django application source
-    ├── manage.py
-    ├── requirements.txt
-    ├── Dockerfile
-    ├── news_portal/
-    ├── newsapp/
-    ├── static/
-    └── templates/
-```
+## Repository Layout
 
-## Run the project with a virtual environment
+    news-24-7--Capstone-Project-Consolidation-/
+    ├── README.md
+    ├── capstone.txt
+    ├── docs/                              # Sphinx project + generated HTML docs
+    └── news247_news_capstone_project/     # Django application source
+        ├── manage.py
+        ├── requirements.txt
+        ├── Dockerfile
+        ├── .env.example
+        ├── news_portal/
+        ├── newsapp/
+        ├── static/
+        └── templates/
+
+------------------------------------------------------------------------
+
+## Run the Project (Virtual Environment)
 
 ### 1. Clone the repository
 
-```bash
-git clone https://github.com/ruwannortje-debug/news-24-7--Capstone-Project-Consolidation-.git
-cd news-24-7--Capstone-Project-Consolidation-
-cd news247_news_capstone_project
-```
+    git clone https://github.com/ruwannortje-debug/news-24-7--Capstone-Project-Consolidation-.git
+    cd news-24-7--Capstone-Project-Consolidation-
+    cd news247_news_capstone_project
+
+------------------------------------------------------------------------
 
 ### 2. Create and activate a virtual environment
 
-```powershell
-python -m venv venv
-venv\Scripts\activate
-```
+    python -m venv venv
+    venv\Scripts\activate
+
+------------------------------------------------------------------------
 
 ### 3. Install dependencies
 
-```powershell
-pip install -r requirements.txt
-```
+    pip install -r requirements.txt
 
-### 4. Run migrations
+------------------------------------------------------------------------
 
-```powershell
-python manage.py migrate
-```
+### 4. Configure environment variables
 
-### 5. Start the development server
+Create a `.env` file from the template:
 
-```powershell
-python manage.py runserver
-```
+    copy .env.example .env
 
-Open `http://127.0.0.1:8000/` in your browser.
+Then update the values inside `.env` with your configuration.
+
+------------------------------------------------------------------------
+
+### 5. Create the database (IMPORTANT)
+
+Before running migrations, create your database manually (e.g. MySQL).
+
+Example: - Create a database in MySQL using a tool like MySQL Workbench
+or CLI - Ensure your `.env` file contains the correct database
+credentials
+
+------------------------------------------------------------------------
+
+### 6. Run migrations
+
+    python manage.py migrate
+
+------------------------------------------------------------------------
+
+### 7. Start the development server
+
+    python manage.py runserver
+
+Open:
+
+    http://127.0.0.1:8000/
+
+------------------------------------------------------------------------
 
 ## Run with Docker
 
-Run these commands from the `news247_news_capstone_project` folder.
+Make sure you are inside:
+
+    news247_news_capstone_project
 
 ### Build the image
 
-```powershell
-docker build -t news247 .
-```
+    docker build -t news247 .
 
 ### Run the container
 
-```powershell
-docker run -p 8000:8000 news247
-```
-
-Then open `http://127.0.0.1:8000/` in your browser.
-
-## Sphinx documentation
-
-The Sphinx documentation project is stored in the top-level `docs` folder.
-Generated HTML output is included in this submission.
-
-### Rebuild the docs
-
-From the repository root:
-
-```powershell
-cd docs
-.\make.bat clean
-.\make.bat html
-```
+    docker run -p 8000:8000 news247
 
 Then open:
 
-```text
-docs\build\html\index.html
-```
+    http://127.0.0.1:8000/
 
-## Environment variables
+------------------------------------------------------------------------
 
-Create a `.env` file inside `news247_news_capstone_project` if needed.
+## Sphinx Documentation
 
-```text
-SECRET_KEY=your_secret_key
-DEBUG=True
-ALLOWED_HOSTS=127.0.0.1,localhost
-```
+The Sphinx documentation project is stored in the top-level `docs`
+folder.\
+Generated HTML output is included for review.
 
-A sample file is also included as `.env.example` in the Django project folder.
+### Rebuild documentation
+
+From the repository root:
+
+    cd docs
+    .\make.bat clean
+    .\make.bat html
+
+Then open:
+
+    docs\build\html\index.html
+
+------------------------------------------------------------------------
 
 ## Notes
 
-- Do not commit secrets such as passwords or tokens.
-- Generated Sphinx HTML docs are intentionally included for reviewer access.
-- The GitHub repository link required for submission is included in `capstone.txt`.
+-   Do not commit secrets such as passwords or tokens
+-   Generated Sphinx HTML docs are included intentionally for reviewer
+    access
+-   The GitHub repository link required for submission is included in
+    `capstone.txt`
